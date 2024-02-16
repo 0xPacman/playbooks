@@ -1,0 +1,17 @@
+###
+# efficiently identify and manage large log files (exceeding 1 GB) within the /var/log directory on Kubernetes workers (or any targeted nodes).
+# to avoid overwhelming manual efforts or the need for accessing individual server lists.
+###
+---
+- name: Find large files in /var/log
+  hosts: workers
+  tasks:
+    - name: Shell command to find large files
+      shell: find /var/log -type f -size +1M -exec ls -lh {} \;
+      register: large_files_output
+      ignore_errors: yes
+
+    - name: Display large files
+      debug:
+        msg: "{{ large_files_output.stdout_lines }}"
+      when: large_files_output.rc == 0

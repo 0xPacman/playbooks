@@ -7,7 +7,7 @@
   hosts: workers
   tasks:
     - name: Shell command to find large files
-      shell: find /var/log -type f -size +1M -exec ls -lh {} \;
+      shell: find /var/log -type f -size +1000M -exec ls -lh {} \;
       register: large_files_output
       ignore_errors: yes
 
